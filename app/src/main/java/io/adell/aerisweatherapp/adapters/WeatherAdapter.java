@@ -1,6 +1,7 @@
 package io.adell.aerisweatherapp.adapters;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,6 +68,14 @@ public class WeatherAdapter extends BaseAdapter {
       AppCompatTextView high =
           (AppCompatTextView) view.findViewById(R.id.weather_day_grid_item_high);
       AppCompatTextView low = (AppCompatTextView) view.findViewById(R.id.weather_day_grid_item_low);
+      AppCompatImageView icon =
+          (AppCompatImageView) view.findViewById(R.id.weather_day_grid_item_icon);
+      String fileName = day.getString("icon");
+      if (fileName != null) {
+        String iconName = fileName.substring(0, fileName.lastIndexOf('.'));
+        int drawableId = weatherIconHelper(iconName);
+        if (drawableId != 0) icon.setImageResource(drawableId);
+      }
       if (units == FAHRENHEIT_UNITS) {
         high.setText(day.getString("maxTempF") + "F");
         low.setText(day.getString("minTempF") + "F");
@@ -87,5 +96,9 @@ public class WeatherAdapter extends BaseAdapter {
       e.printStackTrace();
     }
     return view;
+  }
+
+  private int weatherIconHelper(String iconName) {
+    return context.getResources().getIdentifier(iconName, "drawable", context.getPackageName());
   }
 }

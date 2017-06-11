@@ -17,8 +17,11 @@
       android:id="@+id/activity_main_units_toggle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:textOff="@string/units_celsius"
-      android:textOn="@string/units_fahrenheit"
+      android:layout_alignParentEnd="true"
+      android:layout_alignParentRight="true"
+      android:splitTrack="true"
+      android:textOn="@string/units_celsius"
+      android:textOff="@string/units_fahrenheit"
       />
 
   <GridView
