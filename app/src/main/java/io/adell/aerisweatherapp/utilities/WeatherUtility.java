@@ -8,6 +8,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,12 +26,9 @@ public class WeatherUtility {
         new JsonObjectRequest(Request.Method.GET, forecastsUrl(zip), null,
             new Response.Listener<JSONObject>() {
               @Override public void onResponse(JSONObject response) {
+                parseWeekForecast(response);
                 Log.d("WeatherUtility", "onResponse: " + response);
-                try {
-                  response.getJSONArray("response");
-                } catch (JSONException e) {
-                  e.printStackTrace();
-                }
+
               }
             }, new Response.ErrorListener() {
           @Override public void onErrorResponse(VolleyError error) {
@@ -40,6 +38,17 @@ public class WeatherUtility {
 
     RequestQueue queue = Volley.newRequestQueue(context);
     queue.add(forecastRequest);
+  }
+
+  private static JSONArray parseWeekForecast(JSONObject response) {
+    try {
+      JSONObject forecast = response.getJSONArray("response").getJSONObject(0);
+      JSONArray days = forecast.getJSONArray("periods");
+      return days;
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
   private static String forecastsUrl(String zip) {
