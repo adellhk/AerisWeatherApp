@@ -8,6 +8,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import io.adell.aerisweatherapp.MainActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,12 +22,15 @@ public class WeatherUtility {
   private static String clientSecret = "yjoCIjdwKcZRC4NZEhL7p8s12DpGRl3SzroYfytm";
   private static String aerisUrl = "http://api.aerisapi.com/";
 
-  public static void getForecast(Context context, String zip) {
+  public static void getForecast(final Context context, String zip) {
     JsonObjectRequest forecastRequest =
         new JsonObjectRequest(Request.Method.GET, forecastsUrl(zip), null,
             new Response.Listener<JSONObject>() {
               @Override public void onResponse(JSONObject response) {
-                parseWeekForecast(response);
+                JSONArray days = parseWeekForecast(response);
+                if (context instanceof MainActivity) {
+                  ((MainActivity) context).showForecast(days);
+                }
                 Log.d("WeatherUtility", "onResponse: " + response);
 
               }
