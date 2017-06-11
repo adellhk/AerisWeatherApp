@@ -1,3 +1,5 @@
 <resources>
   <string name="app_name">Aeris Weather App</string>
+  <string name="units_celsius">Celsius</string>
+  <string name="units_fahrenheit">Fahrenheit</string>
 </resources>
